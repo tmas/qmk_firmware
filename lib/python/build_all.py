@@ -42,7 +42,7 @@ if args.blacklist:
 def main():
     for line in BOARDS:
         # We need to manipulate some non-standard directories
-        if line.strip() != "" and line.strip() != "lib/python/build_all.py":
+        if should_include(line):
             if re.match("^(gmmk)",line.strip()):
                 KEYBOARDS.append(line.strip()+"/rev2")
                 KEYBOARDS.append(line.strip()+"/rev3")
@@ -54,6 +54,25 @@ def main():
                     KEYBOARDS.append(line.strip()+"/optical")
                     KEYBOARDS.append(line.strip()+"/optical_via")
             else: KEYBOARDS.append(line.strip())
+    if (args.debug):            
+      print ('Filtered and processed boards: ', KEYBOARDS)
+
+def should_include(keyboard):
+  if keyboard.strip() == "":
+    return False
+  if keyboard.strip() == "lib/python/build_all.py":
+    return False
+  if args.blacklist:
+    if (keyboard.strip() in BLACKLISTED_BOARDS):
+      if (args.debug):
+        print ("Skipping blacklisted keyboard: ", keyboard.strip())
+      return False
+  if args.whitelist:
+    if keyboard.strip() not in WHITELISTED_BOARDS:
+      if (args.debug):
+        print ("Skipping non-whitelisted keyboard: ", keyboard.strip())
+      return False
+  return True
 
 if __name__ == '__main__':
     main()
