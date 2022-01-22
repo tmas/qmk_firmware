@@ -20,6 +20,25 @@ BOARDS = ret.stdout.decode().split('\n')
 
 if args.debug:
   print ("using debug mode")
+
+if args.whitelist:
+  # Grab the list of whitelisted keyboards
+  whitelisted_kb_command = "cat " + args.whitelist + " | tr -d '\r'"
+  whitelisted_kb_ret = subprocess.run(whitelisted_kb_command, capture_output=True, shell=True)
+  WHITELISTED_BOARDS = whitelisted_kb_ret.stdout.decode().split('\n')
+  if (args.debug):
+    print ("using whitelist: ", args.whitelist)
+    print ("whitelist contents: ", WHITELISTED_BOARDS)
+
+if args.blacklist:
+  # Grab the list of blacklisted keyboards
+  blacklisted_kb_command = "cat " + args.blacklist + " | tr -d '\r'"
+  blacklisted_kb_ret = subprocess.run(blacklisted_kb_command, capture_output=True, shell=True)
+  BLACKLISTED_BOARDS = blacklisted_kb_ret.stdout.decode().split('\n')
+  if (args.debug):
+    print ("using blacklist: ", args.blacklist)
+    print ("blacklist contents: ", BLACKLISTED_BOARDS)
+
 def main():
     for line in BOARDS:
         # We need to manipulate some non-standard directories
