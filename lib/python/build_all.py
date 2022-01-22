@@ -26,7 +26,7 @@ if args.whitelist:
   whitelisted_kb_command = "cat " + args.whitelist + " | tr -d '\r'"
   whitelisted_kb_ret = subprocess.run(whitelisted_kb_command, capture_output=True, shell=True)
   WHITELISTED_BOARDS = whitelisted_kb_ret.stdout.decode().split('\n')
-  if (args.debug):
+  if args.debug:
     print ("using whitelist: ", args.whitelist)
     print ("whitelist contents: ", WHITELISTED_BOARDS)
 
@@ -35,7 +35,7 @@ if args.blacklist:
   blacklisted_kb_command = "cat " + args.blacklist + " | tr -d '\r'"
   blacklisted_kb_ret = subprocess.run(blacklisted_kb_command, capture_output=True, shell=True)
   BLACKLISTED_BOARDS = blacklisted_kb_ret.stdout.decode().split('\n')
-  if (args.debug):
+  if args.debug:
     print ("using blacklist: ", args.blacklist)
     print ("blacklist contents: ", BLACKLISTED_BOARDS)
 
@@ -54,7 +54,7 @@ def main():
                     KEYBOARDS.append(line.strip()+"/optical")
                     KEYBOARDS.append(line.strip()+"/optical_via")
             else: KEYBOARDS.append(line.strip())
-    if (args.debug):            
+    if args.debug:            
       print ('Filtered and processed boards: ', KEYBOARDS)
 
 def should_include(keyboard):
@@ -63,13 +63,13 @@ def should_include(keyboard):
   if keyboard.strip() == "lib/python/build_all.py":
     return False
   if args.blacklist:
-    if (keyboard.strip() in BLACKLISTED_BOARDS):
-      if (args.debug):
+    if keyboard.strip() in BLACKLISTED_BOARDS:
+      if args.debug:
         print ("Skipping blacklisted keyboard: ", keyboard.strip())
       return False
   if args.whitelist:
     if keyboard.strip() not in WHITELISTED_BOARDS:
-      if (args.debug):
+      if args.debug:
         print ("Skipping non-whitelisted keyboard: ", keyboard.strip())
       return False
   return True
