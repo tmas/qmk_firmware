@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: pip3 install -r requirements.txt
     - name: Build Sonix keyboards on quickbuild list
-      run:  python3 lib/python/build_all.py --blacklist QUICKBUILD_BLACKLIST
+      run:  python3 lib/python/build_all.py --blacklist quickbuild_blacklist
     - name: Declare some variables
       id: vars
       shell: bash
