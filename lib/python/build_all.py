@@ -17,6 +17,9 @@ command = "grep -rl 'MCU = SN32F2' | sed -e 's/keyboards\///g' -e 's/\/rules.mk/
 
 ret = subprocess.run(command, capture_output=True, shell=True)
 BOARDS = ret.stdout.decode().split('\n')
+
+if args.debug:
+  print ("using debug mode")
 def main():
     for line in BOARDS:
         # We need to manipulate some non-standard directories
