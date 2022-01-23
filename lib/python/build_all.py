@@ -54,8 +54,8 @@ def main():
                     KEYBOARDS.append(line.strip()+"/optical")
                     KEYBOARDS.append(line.strip()+"/optical_via")
             else: KEYBOARDS.append(line.strip())
-    if args.debug:            
-      print ('Filtered and processed boards: ', KEYBOARDS)
+    if args.debug:
+        print ('Filtered and processed boards: ', KEYBOARDS)
 
 def should_include(keyboard):
     if keyboard.strip() == "":
@@ -64,14 +64,14 @@ def should_include(keyboard):
         return False
     if args.blacklist:
         if keyboard.strip() in BLACKLISTED_BOARDS:
-        if args.debug:
-            print ("Skipping blacklisted keyboard: ", keyboard.strip())
-        return False
+            if args.debug:
+                print ("Skipping blacklisted keyboard: ", keyboard.strip())
+            return False
     if args.whitelist:
         if keyboard.strip() not in WHITELISTED_BOARDS:
-        if args.debug:
-            print ("Skipping non-whitelisted keyboard: ", keyboard.strip())
-        return False
+            if args.debug:
+                print ("Skipping non-whitelisted keyboard: ", keyboard.strip())
+            return False
     return True
 
 if __name__ == '__main__':
