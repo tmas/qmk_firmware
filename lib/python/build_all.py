@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 KEYBOARDS = []
 # Search the repository for Sonix SN32F2 keyboard directories
-command = "grep -rl 'MCU = SN32F2' | sed -e 's/keyboards\///g' -e 's/\/rules.mk//g'| sort"
+command = "grep -rl 'MCU = SN32F2' | sed -e 's;keyboards\/;;g' -e 's;\/rules.mk;;g'| sort"
 
 ret = subprocess.run(command, capture_output=True, shell=True)
 BOARDS = ret.stdout.decode().split('\n')
