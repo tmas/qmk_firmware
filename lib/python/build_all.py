@@ -19,7 +19,7 @@ ret = subprocess.run(command, capture_output=True, shell=True)
 BOARDS = ret.stdout.decode().split('\n')
 
 if args.debug:
-    print ("using debug mode")
+    print("using debug mode")
 
 if args.whitelist:
     # Grab the list of whitelisted keyboards
@@ -27,8 +27,8 @@ if args.whitelist:
     whitelisted_kb_ret = subprocess.run(whitelisted_kb_command, capture_output=True, shell=True)
     WHITELISTED_BOARDS = whitelisted_kb_ret.stdout.decode().split('\n')
     if args.debug:
-        print ("using whitelist: ", args.whitelist)
-        print ("whitelist contents: ", WHITELISTED_BOARDS)
+        print("using whitelist: ", args.whitelist)
+        print("whitelist contents: ", WHITELISTED_BOARDS)
 
 if args.blacklist:
     # Grab the list of blacklisted keyboards
@@ -36,26 +36,29 @@ if args.blacklist:
     blacklisted_kb_ret = subprocess.run(blacklisted_kb_command, capture_output=True, shell=True)
     BLACKLISTED_BOARDS = blacklisted_kb_ret.stdout.decode().split('\n')
     if args.debug:
-        print ("using blacklist: ", args.blacklist)
-        print ("blacklist contents: ", BLACKLISTED_BOARDS)
+        print("using blacklist: ", args.blacklist)
+        print("blacklist contents: ", BLACKLISTED_BOARDS)
+
 
 def main():
     for line in BOARDS:
         # We need to manipulate some non-standard directories
         if should_include(line):
             if re.match("^(gmmk)",line.strip()):
-                KEYBOARDS.append(line.strip()+"/rev2")
-                KEYBOARDS.append(line.strip()+"/rev3")
+                KEYBOARDS.append(line.strip() + "/rev2")
+                KEYBOARDS.append(line.strip() + "/rev3")
             if re.match("^(keychron/k)",line.strip()):
                 KEYBOARDS.append(line.strip())
                 # keychron K series white don't have yet via/optical support
                 if re.match("(?!.*white)",line.strip()):
-                    KEYBOARDS.append(line.strip()+"/via")
-                    KEYBOARDS.append(line.strip()+"/optical")
-                    KEYBOARDS.append(line.strip()+"/optical_via")
-            else: KEYBOARDS.append(line.strip())
+                    KEYBOARDS.append(line.strip() + "/via")
+                    KEYBOARDS.append(line.strip() + "/optical")
+                    KEYBOARDS.append(line.strip() + "/optical_via")
+            else:
+                KEYBOARDS.append(line.strip())
     if args.debug:
-        print ('Filtered and processed boards: ', KEYBOARDS)
+        print('Filtered and processed boards: ', KEYBOARDS)
+
 
 def should_include(keyboard):
     if keyboard.strip() == "":
@@ -65,14 +68,15 @@ def should_include(keyboard):
     if args.blacklist:
         if keyboard.strip() in BLACKLISTED_BOARDS:
             if args.debug:
-                print ("Skipping blacklisted keyboard: ", keyboard.strip())
+                print("Skipping blacklisted keyboard: ", keyboard.strip())
             return False
     if args.whitelist:
         if keyboard.strip() not in WHITELISTED_BOARDS:
             if args.debug:
-                print ("Skipping non-whitelisted keyboard: ", keyboard.strip())
+                print("Skipping non-whitelisted keyboard: ", keyboard.strip())
             return False
     return True
+
 
 if __name__ == '__main__':
     main()
